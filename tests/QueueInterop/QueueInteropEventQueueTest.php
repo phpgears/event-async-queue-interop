@@ -16,10 +16,10 @@ namespace Gears\Event\Async\QueueInterop\Tests;
 use Gears\Event\Async\QueueInterop\QueueInteropEventQueue;
 use Gears\Event\Async\Serializer\EventSerializer;
 use Gears\Event\Event;
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrDestination;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrProducer;
+use Interop\Queue\Context;
+use Interop\Queue\Destination;
+use Interop\Queue\Message;
+use Interop\Queue\Producer;
 use PHPUnit\Framework\TestCase;
 
 class QueueInteropEventQueueTest extends TestCase
@@ -28,33 +28,33 @@ class QueueInteropEventQueueTest extends TestCase
     {
         $serializer = $this->getMockBuilder(EventSerializer::class)
             ->getMock();
-        $serializer->expects($this->once())
+        $serializer->expects(static::once())
             ->method('serialize')
-            ->will($this->returnValue(''));
+            ->will(static::returnValue(''));
         /* @var EventSerializer $serializer */
 
-        $producer = $this->getMockBuilder(PsrProducer::class)
+        $producer = $this->getMockBuilder(Producer::class)
             ->getMock();
-        $producer->expects($this->once())
+        $producer->expects(static::once())
             ->method('send');
-        /* @var PsrProducer $producer */
+        /* @var Producer $producer */
 
-        /* @var PsrMessage $message */
-        $message = $this->getMockBuilder(PsrMessage::class)
+        /* @var Message $message */
+        $message = $this->getMockBuilder(Message::class)
             ->getMock();
 
-        $context = $this->getMockBuilder(PsrContext::class)
+        $context = $this->getMockBuilder(Context::class)
             ->getMock();
-        $context->expects($this->once())
+        $context->expects(static::once())
             ->method('createProducer')
-            ->will($this->returnValue($producer));
-        $context->expects($this->once())
+            ->will(static::returnValue($producer));
+        $context->expects(static::once())
             ->method('createMessage')
-            ->will($this->returnValue($message));
-        /* @var PsrContext $context */
+            ->will(static::returnValue($message));
+        /* @var Context $context */
 
-        /* @var PsrDestination $destination */
-        $destination = $this->getMockBuilder(PsrDestination::class)
+        /* @var Destination $destination */
+        $destination = $this->getMockBuilder(Destination::class)
             ->getMock();
 
         /* @var Event $command */

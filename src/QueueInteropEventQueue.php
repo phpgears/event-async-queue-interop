@@ -17,22 +17,22 @@ use Gears\Event\Async\AbstractEventQueue;
 use Gears\Event\Async\Exception\EventQueueException;
 use Gears\Event\Async\Serializer\EventSerializer;
 use Gears\Event\Event;
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrDestination;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrProducer;
+use Interop\Queue\Context;
+use Interop\Queue\Destination;
+use Interop\Queue\Message;
+use Interop\Queue\Producer;
 
 class QueueInteropEventQueue extends AbstractEventQueue
 {
     /**
      * Queue context.
      *
-     * @var PsrContext
+     * @var Context
      */
     protected $context;
 
     /**
-     * @var PsrDestination
+     * @var Destination
      */
     protected $destination;
 
@@ -40,10 +40,10 @@ class QueueInteropEventQueue extends AbstractEventQueue
      * EnqueueEventBus constructor.
      *
      * @param EventSerializer $serializer
-     * @param PsrContext      $context
-     * @param PsrDestination  $destination
+     * @param Context         $context
+     * @param Destination     $destination
      */
-    public function __construct(EventSerializer $serializer, PsrContext $context, PsrDestination $destination)
+    public function __construct(EventSerializer $serializer, Context $context, Destination $destination)
     {
         parent::__construct($serializer);
 
@@ -70,9 +70,9 @@ class QueueInteropEventQueue extends AbstractEventQueue
      *
      * @param Event $event
      *
-     * @return PsrMessage
+     * @return Message
      */
-    protected function getMessage(Event $event): PsrMessage
+    protected function getMessage(Event $event): Message
     {
         return $this->context->createMessage($this->getSerializedEvent($event));
     }
@@ -80,9 +80,9 @@ class QueueInteropEventQueue extends AbstractEventQueue
     /**
      * Get message producer.
      *
-     * @return PsrProducer
+     * @return Producer
      */
-    protected function getMessageProducer(): PsrProducer
+    protected function getMessageProducer(): Producer
     {
         return $this->context->createProducer();
     }
